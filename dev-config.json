@@ -1,9 +1,29 @@
 {
   "variables" : [
     {
-      "name" : "Username",
-      "value" : "ica",
-      "description" : "Description test"
+      "name" : "postgres_user",
+      "value" : "icapi",
+      "description" : ""
+    },
+    {
+      "name" : "postgres_password",
+      "value" : "Encrypted 2be98afc86aa7f2e4cb79ce79dd93bfd3",
+      "description" : ""
+    },
+    {
+      "name" : "postgres_url",
+      "value" : "localhost",
+      "description" : ""
+    },
+    {
+      "name" : "postgres_port",
+      "value" : "5432",
+      "description" : ""
+    },
+    {
+      "name" : "postgres_db",
+      "value" : "etl",
+      "description" : ""
     }
   ]
 }

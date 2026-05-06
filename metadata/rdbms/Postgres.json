@@ -1,13 +1,13 @@
 {
   "rdbms": {
     "POSTGRESQL": {
-      "databaseName": "etl",
+      "databaseName": "${postgres_db}",
       "pluginId": "POSTGRESQL",
       "accessType": 0,
-      "hostname": "localhost",
-      "password": "Encrypted 2be98afc86aa7f2e4cb79ce79dd93bfd3",
+      "hostname": "${postgres_url}",
+      "password": "${postgres_password}",
       "pluginName": "PostgreSQL",
-      "port": "5432",
+      "port": "${postgres_port}",
       "attributes": {
         "SUPPORTS_TIMESTAMP_DATA_TYPE": "Y",
         "QUOTE_ALL_FIELDS": "N",
@@ -19,7 +19,7 @@
         "PREFERRED_SCHEMA_NAME": ""
       },
       "manualUrl": "",
-      "username": "icapi"
+      "username": "${postgres_user}"
     }
   },
   "name": "Postgres"

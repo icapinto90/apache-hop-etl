@@ -13,34 +13,29 @@
     <transform_performance_capturing_delay>1000</transform_performance_capturing_delay>
     <transform_performance_capturing_size_limit>100</transform_performance_capturing_size_limit>
     <created_user>-</created_user>
-    <created_date>2026/05/06 18:45:00.000</created_date>
+    <created_date>2026/05/06 19:30:00.000</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2026/05/06 18:45:00.000</modified_date>
+    <modified_date>2026/05/06 20:00:00.000</modified_date>
   </info>
   <notepads>
   </notepads>
   <order>
+    <hop><from>silver_dim_customers</from><to>gold_dim_customers</to><enabled>Y</enabled></hop>
+    <hop><from>silver_dim_products</from><to>gold_dim_products</to><enabled>Y</enabled></hop>
+    <hop><from>silver_fact_sales</from><to>gold_fact_sales</to><enabled>Y</enabled></hop>
   </order>
   <transform>
-    <name>gold.dim_customers</name>
-    <type>ExecSql</type>
+    <name>silver_dim_customers</name>
+    <type>TableInput</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
     <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
+    <partitioning><method>none</method><schema_name/></partitioning>
     <connection>Postgres</connection>
     <execute_each_row>N</execute_each_row>
-    <single_statement>N</single_statement>
-    <replace_variables>N</replace_variables>
-    <quoteString>N</quoteString>
-    <sqlfromfile>N</sqlfromfile>
-    <set_params>N</set_params>
-    <sql>CREATE OR REPLACE VIEW gold.dim_customers AS
-SELECT
+    <limit>0</limit>
+    <sql>SELECT
   ROW_NUMBER() OVER (ORDER BY ci.cst_id) AS customer_key
 , ci.cst_id                              AS customer_id
 , ci.cst_key                             AS customer_number
@@ -56,34 +51,56 @@ SELECT
 , ci.cst_create_date                     AS create_date
 FROM silver.crm_cust_info ci
 LEFT JOIN silver.erp_cust_az12 ca ON ci.cst_key = ca.cid
-LEFT JOIN silver.erp_loc_a101  la ON ci.cst_key = la.cid;
+LEFT JOIN silver.erp_loc_a101  la ON ci.cst_key = la.cid
 </sql>
+    <variables_active>N</variables_active>
     <attributes/>
-    <GUI>
-      <xloc>176</xloc>
-      <yloc>128</yloc>
-    </GUI>
+    <GUI><xloc>160</xloc><yloc>128</yloc></GUI>
   </transform>
   <transform>
-    <name>gold.dim_products</name>
-    <type>ExecSql</type>
+    <name>gold_dim_customers</name>
+    <type>TableOutput</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
     <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <add_columns>N</add_columns>
+    <always_drop_and_recreate>N</always_drop_and_recreate>
+    <auto_update_table_structure>N</auto_update_table_structure>
+    <change_column_types>N</change_column_types>
+    <commit>1000</commit>
+    <connection>Postgres</connection>
+    <drop_columns>N</drop_columns>
+    <fields></fields>
+    <ignore_errors>N</ignore_errors>
+    <only_when_have_rows>N</only_when_have_rows>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <return_keys>N</return_keys>
+    <schema>gold</schema>
+    <specify_fields>N</specify_fields>
+    <table>dim_customers</table>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_in_table>Y</tablename_in_table>
+    <truncate>Y</truncate>
+    <use_batch>Y</use_batch>
+    <attributes/>
+    <GUI><xloc>480</xloc><yloc>128</yloc></GUI>
+  </transform>
+  <transform>
+    <name>silver_dim_products</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
     <connection>Postgres</connection>
     <execute_each_row>N</execute_each_row>
-    <single_statement>N</single_statement>
-    <replace_variables>N</replace_variables>
-    <quoteString>N</quoteString>
-    <sqlfromfile>N</sqlfromfile>
-    <set_params>N</set_params>
-    <sql>CREATE OR REPLACE VIEW gold.dim_products AS
-SELECT
+    <limit>0</limit>
+    <sql>SELECT
   ROW_NUMBER() OVER (ORDER BY pn.prd_start_dt, pn.prd_key) AS product_key
 , pn.prd_id        AS product_id
 , pn.prd_key       AS product_number
@@ -97,33 +114,68 @@ SELECT
 , pn.prd_start_dt  AS start_date
 FROM silver.crm_prd_info pn
 LEFT JOIN silver.erp_px_cat_g1v2 pc ON pn.cat_id = pc.id
-WHERE pn.prd_end_dt IS NULL;
+WHERE pn.prd_end_dt IS NULL
 </sql>
+    <variables_active>N</variables_active>
     <attributes/>
-    <GUI>
-      <xloc>176</xloc>
-      <yloc>256</yloc>
-    </GUI>
+    <GUI><xloc>160</xloc><yloc>320</yloc></GUI>
   </transform>
   <transform>
-    <name>gold.fact_sales</name>
-    <type>ExecSql</type>
+    <name>gold_dim_products</name>
+    <type>TableOutput</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
     <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <add_columns>N</add_columns>
+    <always_drop_and_recreate>N</always_drop_and_recreate>
+    <auto_update_table_structure>N</auto_update_table_structure>
+    <change_column_types>N</change_column_types>
+    <commit>1000</commit>
+    <connection>Postgres</connection>
+    <drop_columns>N</drop_columns>
+    <fields></fields>
+    <ignore_errors>N</ignore_errors>
+    <only_when_have_rows>N</only_when_have_rows>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <return_keys>N</return_keys>
+    <schema>gold</schema>
+    <specify_fields>N</specify_fields>
+    <table>dim_products</table>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_in_table>Y</tablename_in_table>
+    <truncate>Y</truncate>
+    <use_batch>Y</use_batch>
+    <attributes/>
+    <GUI><xloc>480</xloc><yloc>320</yloc></GUI>
+  </transform>
+  <transform>
+    <name>silver_fact_sales</name>
+    <type>TableInput</type>
+    <description>Recomputes surrogate keys via CTE (same ordering as dim_*) so this pipeline is independent</description>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
     <connection>Postgres</connection>
     <execute_each_row>N</execute_each_row>
-    <single_statement>N</single_statement>
-    <replace_variables>N</replace_variables>
-    <quoteString>N</quoteString>
-    <sqlfromfile>N</sqlfromfile>
-    <set_params>N</set_params>
-    <sql>CREATE OR REPLACE VIEW gold.fact_sales AS
+    <limit>0</limit>
+    <sql>WITH dim_customers AS (
+  SELECT
+    ROW_NUMBER() OVER (ORDER BY ci.cst_id) AS customer_key
+  , ci.cst_id AS customer_id
+  FROM silver.crm_cust_info ci
+),
+dim_products AS (
+  SELECT
+    ROW_NUMBER() OVER (ORDER BY pn.prd_start_dt, pn.prd_key) AS product_key
+  , pn.prd_key AS product_number
+  FROM silver.crm_prd_info pn
+  WHERE pn.prd_end_dt IS NULL
+)
 SELECT
   sd.sls_ord_num   AS order_number
 , pr.product_key
@@ -135,14 +187,44 @@ SELECT
 , sd.sls_quantity  AS quantity
 , sd.sls_price     AS price
 FROM silver.crm_sales_details sd
-LEFT JOIN gold.dim_products  pr ON sd.sls_prd_key = pr.product_number
-LEFT JOIN gold.dim_customers cu ON sd.sls_cust_id = cu.customer_id;
+LEFT JOIN dim_products  pr ON sd.sls_prd_key = pr.product_number
+LEFT JOIN dim_customers cu ON sd.sls_cust_id = cu.customer_id
 </sql>
+    <variables_active>N</variables_active>
     <attributes/>
-    <GUI>
-      <xloc>176</xloc>
-      <yloc>384</yloc>
-    </GUI>
+    <GUI><xloc>160</xloc><yloc>512</yloc></GUI>
+  </transform>
+  <transform>
+    <name>gold_fact_sales</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning><method>none</method><schema_name/></partitioning>
+    <add_columns>N</add_columns>
+    <always_drop_and_recreate>N</always_drop_and_recreate>
+    <auto_update_table_structure>N</auto_update_table_structure>
+    <change_column_types>N</change_column_types>
+    <commit>1000</commit>
+    <connection>Postgres</connection>
+    <drop_columns>N</drop_columns>
+    <fields></fields>
+    <ignore_errors>N</ignore_errors>
+    <only_when_have_rows>N</only_when_have_rows>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <return_keys>N</return_keys>
+    <schema>gold</schema>
+    <specify_fields>N</specify_fields>
+    <table>fact_sales</table>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_in_table>Y</tablename_in_table>
+    <truncate>Y</truncate>
+    <use_batch>Y</use_batch>
+    <attributes/>
+    <GUI><xloc>480</xloc><yloc>512</yloc></GUI>
   </transform>
   <transform_error_handling>
   </transform_error_handling>

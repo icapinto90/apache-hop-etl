@@ -810,7 +810,7 @@ FROM bronze.crm_cust_info</sql>
     <variables_active>N</variables_active>
     <attributes/>
     <GUI>
-      <xloc>80</xloc>
+      <xloc>64</xloc>
       <yloc>128</yloc>
     </GUI>
   </transform>
@@ -1189,11 +1189,14 @@ if (sls_sales == null || sls_sales &lt;= 0 || sls_sales != expected) {
     <only_when_have_rows>N</only_when_have_rows>
     <partitioning_daily>N</partitioning_daily>
     <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
     <partitioning_monthly>Y</partitioning_monthly>
+    <return_field/>
     <return_keys>N</return_keys>
     <schema>silver</schema>
     <specify_fields>N</specify_fields>
     <table>crm_prd_info</table>
+    <tablename_field/>
     <tablename_in_field>N</tablename_in_field>
     <tablename_in_table>Y</tablename_in_table>
     <truncate>Y</truncate>
