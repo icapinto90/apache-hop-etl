@@ -1,0 +1,9 @@
+{
+  "variables" : [
+    {
+      "name" : "Username",
+      "value" : "ica",
+      "description" : ""
+    }
+  ]
+}

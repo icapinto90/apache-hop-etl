@@ -810,7 +810,7 @@ FROM bronze.crm_cust_info</sql>
     <variables_active>N</variables_active>
     <attributes/>
     <GUI>
-      <xloc>80</xloc>
+      <xloc>64</xloc>
       <yloc>128</yloc>
     </GUI>
   </transform>
